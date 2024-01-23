@@ -11,20 +11,17 @@ fs.readdir(
     if (error) throw error;
 
     data.forEach((file) => {
-      fs.stat(
-        path.join(__dirname, 'styles', file.name),
-        function (error, stat) {
-          if (error) throw error;
+      fs.stat(path.join(__dirname, 'styles', file.name), function (error) {
+        if (error) throw error;
 
-          if (stat.isFile() && path.extname(file.name) === '.css') {
-            const readableStream = fs.createReadStream(
-              path.join(__dirname, 'styles', file.name),
-              'utf-8',
-            );
-            readableStream.pipe(writableStream);
-          }
-        },
-      );
+        if (file.isFile() && path.extname(file.name) === '.css') {
+          const readableStream = fs.createReadStream(
+            path.join(__dirname, 'styles', file.name),
+            'utf-8',
+          );
+          readableStream.pipe(writableStream);
+        }
+      });
     });
   },
 );
